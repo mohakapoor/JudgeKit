@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass,asdict
 import json
 
 @dataclass
@@ -45,7 +45,15 @@ def batch_load_questions(count,PATH):
 
     return retrieval_inputs,generation_inputs
 
-def save_results(retrieval_results,generation_results,PATH):
-    with open(PATH,"w",encoding="utf-8") as f:
-        json.dump(retrieval_results,f)
-        json.dump(generation_results,f)
+def save_results(retrieval_results, generation_results, PATH):
+    combined_data = []
+    
+    for ret_res, gen_res in zip(retrieval_results, generation_results):
+        entry = {
+            "retrieval_evaluation": asdict(ret_res),
+            "generation_evaluation": asdict(gen_res)
+        }
+        
+        combined_data.append(entry)
+    with open(PATH, "w", encoding="utf-8") as f:
+        json.dump(combined_data, f, indent=4)
