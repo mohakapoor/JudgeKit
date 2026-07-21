@@ -5,6 +5,7 @@ import json
 from config import RETRIEVAL_SYSTEM_PROMPT,GENERATION_SYSTEM_PROMPT
 from src.prompt_builder import build_generation_prompt,build_retrieval_prompt
 from config import TEMPERATURE,MODEL_NAME
+from src.utils import calculate_cost
 
 load_dotenv()
 
@@ -57,8 +58,13 @@ def eval_retrieval(retrieval_input):
         response_format={"type":"json_object"}
     )
     raw_text = response.choices[0].message.content
+    input_tokens = response.usage.prompt_tokens
+    output_tokens = response.usage.completion_tokens
+    cost = calculate_cost(input_tokens,output_tokens)
+    parsed_json = json.loads(raw_text)
+    parsed_json["cost"] = cost
 
-    return json.loads(raw_text)
+    return parsed_json
 
 def eval_generation(generation_input):
     groq_api_key = os.getenv("GROQ_API_KEY")
@@ -77,5 +83,10 @@ def eval_generation(generation_input):
         response_format={"type":"json_object"}
     )
     raw_text = response.choices[0].message.content
+    input_tokens = response.usage.prompt_tokens
+    output_tokens = response.usage.completion_tokens
+    cost = calculate_cost(input_tokens,output_tokens)
+    parsed_json = json.loads(raw_text)
+    parsed_json["cost"] = cost
 
-    return json.loads(raw_text)
+    return parsed_json
