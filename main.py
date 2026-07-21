@@ -1,5 +1,6 @@
 from src.agent import eval_retrieval,eval_generation
 from config import PATH
+import time
 import json
 from src.utils import batch_load_questions,save_results
 def main():
@@ -9,7 +10,7 @@ def main():
         r_res = eval_retrieval(ret_res)
         g_res = eval_generation(gen_res)
         res.append((r_res,g_res))
-
+        time.sleep(6)
     
     return res
 
