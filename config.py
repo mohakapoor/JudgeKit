@@ -1,4 +1,6 @@
 MODEL_NAME = "llama-3.1-8b-instant"
+INPUT_COST = 0.05
+OUTPUT_COST = 0.08
 TEMPERATURE = 0.0
 PATH = "generated_responses.json"
 COUNT = 5
