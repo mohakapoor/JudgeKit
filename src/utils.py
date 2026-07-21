@@ -1,5 +1,7 @@
 from dataclasses import dataclass,asdict
 import json
+from config import INPUT_COST,OUTPUT_COST
+
 
 @dataclass
 class RetrievalInput:
@@ -57,3 +59,7 @@ def save_results(retrieval_results, generation_results, PATH):
         combined_data.append(entry)
     with open(PATH, "w", encoding="utf-8") as f:
         json.dump(combined_data, f, indent=4)
+
+
+def calculate_cost(input_tokens,output_tokens):
+    return ((input_tokens * INPUT_COST) + (output_tokens * OUTPUT_COST))/1000000
