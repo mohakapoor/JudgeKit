@@ -1,23 +1,19 @@
-import json
-from config import PATH
+from src.utils import RetrievalInput,GenerationInput
 
+def build_retrieval_prompt(data:RetrievalInput) -> str:
+    return f"""
+    Query: {data.query}
+    Context: {data.contexts}
+    Ground Truth: {data.ground_truth}
+    """
 
-def build_question_prompt(idx: int):
-    with open(PATH,"r",encoding="utf-8") as f:
-        data = json.load(f)
-        ques = data["question"][idx]
-        contexts = data["contexts"][idx]
-        ground_truth = data["ground_truth"][idx]
-        response = data["responses"][idx][0]["text"]
+def build_generation_prompt(data:GenerationInput) -> str:
+    return f"""
+    Query: {data.query}
+    Context: {data.contexts}
+    Response: {data.response}
+    """
+    
 
-        prompt = f"""Query: "{ques}"
-
-        LLM Answer: "{response}"
-
-        Context: {contexts}
-
-        Ground Truth:
-        {ground_truth}"""
-
-        return prompt
+    
         
