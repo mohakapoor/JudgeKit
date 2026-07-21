@@ -60,3 +60,22 @@ def eval_retrieval(retrieval_input):
 
     return json.loads(raw_text)
 
+def eval_generation(generation_input):
+    groq_api_key = os.getenv("GROQ_API_KEY")
+
+    client = Groq(
+        api_key=groq_api_key
+    )
+    usr_prompt = build_generation_prompt(generation_input)
+    response = client.chat.completions.create(
+        model=MODEL_NAME,
+        temperature=TEMPERATURE,
+        messages=[
+            {"role": "system", "content": GENERATION_SYSTEM_PROMPT},
+            {"role": "user", "content": usr_prompt}
+        ],
+        response_format={"type":"json_object"}
+    )
+    raw_text = response.choices[0].message.content
+
+    return json.loads(raw_text)
