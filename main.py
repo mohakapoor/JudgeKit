@@ -3,23 +3,28 @@ from config import PATH
 import json
 from src.utils import batch_load_questions,save_results
 def main():
-    r,g = batch_load_questions(PATH,2)
+    retrieval_results,generation_results = batch_load_questions(PATH)
+    res = []
+    for ret_res, gen_res in zip(retrieval_results, generation_results):
+        r_res = eval_retrieval(ret_res)
+        g_res = eval_generation(gen_res)
+        res.append((r_res,g_res))
 
-    r_res = eval_retrieval(r[0])
-    g_res = eval_generation(g[0])
     
-    return r_res,g_res
+    return res
 
 if __name__ == "__main__":
-    r_res, g_res = main()
+    results = main()
     
-    print("\n" + "="*50)
-    print("RETRIEVAL EVALUATION")
-    print("="*50)
-    print(json.dumps(r_res, indent=4))
-    
-    print("\n" + "="*50)
-    print("GENERATION EVALUATION")
-    print("="*50)
-    print(json.dumps(g_res, indent=4))
-    print("\n")
+    for i, (r_res, g_res) in enumerate(results):
+        print("\n" + "="*60)
+        print(f"TEST CASE {i+1}")
+        print("="*60)
+        
+        print("\n[RETRIEVAL EVALUATION]")
+        print(json.dumps(r_res, indent=4))
+        
+        print("\n[GENERATION EVALUATION]")
+        print(json.dumps(g_res, indent=4))
+        
+    print("\nAll test cases completed!")
