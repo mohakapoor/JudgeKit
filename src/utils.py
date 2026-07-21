@@ -6,13 +6,11 @@ class RetrievalInput:
     ground_truth: str 
 
 @dataclass
-class GenerationOutput:
-    faithfulness_score: float
-    faithfulness_reasoning: str 
-    relevance_score: float
-    relevance_reasoning: str
-
-
+class RetrievalOutput:
+    precision_score: float
+    precision_reasoning: str
+    recall_score: float
+    recall_reasoning: str
 
 @dataclass
 class GenerationInput:
@@ -20,3 +18,9 @@ class GenerationInput:
     contexts: list[str]
     response: str 
 
+@dataclass
+class GenerationOutput:
+    faithfulness_score: float
+    faithfulness_reasoning: str 
+    relevance_score: float
+    relevance_reasoning: str
