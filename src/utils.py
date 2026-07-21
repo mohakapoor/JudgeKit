@@ -28,7 +28,7 @@ class GenerationOutput:
     relevance_reasoning: str
 
 
-def batch_load_questions(count,PATH):
+def batch_load_questions(PATH,count=5):
     with open(PATH,"r",encoding="utf-8") as f:
         data = json.load(f)
 
