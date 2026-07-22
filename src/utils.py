@@ -15,6 +15,9 @@ class RetrievalOutput:
     precision_reasoning: str
     recall_score: float
     recall_reasoning: str
+    cost: float
+    latency: float
+    inference_time: float
 
 @dataclass
 class GenerationInput:
@@ -28,6 +31,9 @@ class GenerationOutput:
     faithfulness_reasoning: str 
     relevance_score: float
     relevance_reasoning: str
+    cost: float
+    latency: float
+    inference_time: float
 
 
 def batch_load_questions(PATH,count=5):
