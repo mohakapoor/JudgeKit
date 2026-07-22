@@ -1,7 +1,7 @@
 from dataclasses import dataclass,asdict
 import json
-from config import INPUT_COST,OUTPUT_COST
-
+from config import INPUT_COST,OUTPUT_COST,PATH
+from random import randint
 
 @dataclass
 class RetrievalInput:
@@ -52,6 +52,20 @@ def batch_load_questions(PATH,count=5):
             generation_inputs.append(GenerationInput(ques,contexts,response))
 
     return retrieval_inputs,generation_inputs
+
+
+def random_ques_loader():
+    with open(PATH,"r",encoding="utf-8") as f:
+        data = json.load(f)
+        i = randint(0,51)
+        ques = data["question"][i]
+        contexts = data["contexts"][i]
+        ground_truth = data["ground_truth"][i]
+        response = data["responses"][i][0]["text"]  
+        r = RetrievalInput(ques,contexts,ground_truth)
+        g = GenerationInput(ques,contexts,response)
+
+    return r,g
 
 def save_results(retrieval_results, generation_results, PATH):
     combined_data = []
