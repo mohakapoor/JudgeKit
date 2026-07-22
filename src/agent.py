@@ -6,7 +6,7 @@ import time
 from config import RETRIEVAL_SYSTEM_PROMPT,GENERATION_SYSTEM_PROMPT
 from src.prompt_builder import build_generation_prompt,build_retrieval_prompt
 from config import TEMPERATURE,MODEL_NAME
-from src.utils import calculate_cost
+from src.utils import calculate_cost,RetrievalOutput,GenerationOutput
 
 load_dotenv()
 
@@ -70,7 +70,7 @@ def eval_retrieval(retrieval_input):
     parsed_json["latency"] = end - start
     parsed_json["inference_time"] = response.usage.total_time
 
-    return parsed_json
+    return RetrievalOutput(**parsed_json)
 
 def eval_generation(generation_input):
     groq_api_key = os.getenv("GROQ_API_KEY")
@@ -99,4 +99,4 @@ def eval_generation(generation_input):
     parsed_json["latency"] = end-start
     parsed_json["inference_time"] = response.usage.total_time
 
-    return parsed_json
+    return GenerationOutput(**parsed_json)
