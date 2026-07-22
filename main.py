@@ -15,6 +15,7 @@ def main():
     return res
 
 if __name__ == "__main__":
+    from dataclasses import asdict
     results = main()
     
     for i, (r_res, g_res) in enumerate(results):
@@ -23,9 +24,9 @@ if __name__ == "__main__":
         print("="*60)
         
         print("\n[RETRIEVAL EVALUATION]")
-        print(json.dumps(r_res, indent=4))
+        print(json.dumps(asdict(r_res), indent=4))
         
         print("\n[GENERATION EVALUATION]")
-        print(json.dumps(g_res, indent=4))
+        print(json.dumps(asdict(g_res), indent=4))
         
     print("\nAll test cases completed!")
