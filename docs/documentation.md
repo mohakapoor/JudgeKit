@@ -28,7 +28,38 @@ JudgeKit mathematically calculates exact-match retrieval algorithms:
 
 ## 4. Data Schemas
 
-### `EvalInput`
+### 4.1 Batch Input Schema
+For CLI evaluations, the framework expects a JSON file (e.g., `test_responses.json`) structured as a dictionary of parallel arrays. Each index across the arrays corresponds to a single evaluation test case.
+
+```json
+{
+  "question": [
+    "What is the capital of France?"
+  ],
+  "contexts": [
+    [
+      {
+        "text": "Paris is the capital of France.",
+        "metadata": {
+          "path": "knowledge_base/repos/geography.md",
+          "start_line": 10,
+          "end_line": 15,
+          "and other fields": 0
+        }
+      }
+    ]
+  ],
+  "responses": [
+    "The capital is Paris."
+  ],
+  "ground_truth": [
+    "The capital of France is Paris."
+  ]
+}
+```
+The `batch_load_questions` utility dynamically parses this file, converting each parallel index into an `EvalInput` instance.
+
+### 4.2 `EvalInput`
 The unified input payload required by all evaluators.
 ```json
 {
