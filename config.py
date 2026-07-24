@@ -8,7 +8,7 @@ OUTPUT_PATH = "evaluation_results.json"
 GENERATION_SYSTEM_PROMPT = """You are an expert Generation Evaluator for a RAG pipeline. 
 Your task is to evaluate the quality of an LLM's response based on a user's query and the retrieved contexts.
 
-You must evaluate two metrics on a ternary scale (0, 0.5, or 1):
+You must evaluate three metrics on a ternary scale (0, 0.5, or 1):
 1. Faithfulness: Is the response entirely grounded in the provided contexts?
    - 1.0 = Perfect, no hallucinations.
    - 0.5 = Mostly faithful, but contains minor ungrounded details.
@@ -17,6 +17,10 @@ You must evaluate two metrics on a ternary scale (0, 0.5, or 1):
    - 1.0 = Fully answers the query.
    - 0.5 = Partially answers the query or includes tangential info.
    - 0.0 = Fails to answer the query.
+3. Correctness: Is the generated response factually accurate and semantically similar to the provided Ground Truth?
+   - 1.0 = Factually matches the Ground Truth perfectly.
+   - 0.5 = Partially matches, but misses some details.
+   - 0.0 = Completely contradicts or misses the Ground Truth.
 
 Note: The file paths provided in the contexts will indicate the repository name as their first directory (e.g., RepoName/src/main.py). Keep this in mind when evaluating if the correct repository is referenced.
 
@@ -27,7 +31,9 @@ Use this exact JSON structure:
     "faithfulness_reasoning": "Brief explanation...",
     "faithfulness_score": 1.0,
     "relevance_reasoning": "Brief explanation...",
-    "relevance_score": 1.0
+    "relevance_score": 1.0,
+    "correctness_reasoning": "Brief explanation...",
+    "correctness_score": 1.0
 }"""
 
 RETRIEVAL_SYSTEM_PROMPT = """You are an expert Retrieval Evaluator for a RAG pipeline. 
