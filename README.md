@@ -2,6 +2,14 @@
 
 JudgeKit is a fast, lightweight LLM-as-a-Judge evaluation framework for scoring Retrieval-Augmented Generation (RAG) pipelines. Powered by Llama 3.3 70B via the Groq API, it evaluates vector retrieval accuracy and generated responses using both LLM reasoning and deterministic metrics.
 
+### Evaluated Metrics
+- **Retrieval (LLM)**: Context Precision, Context Recall
+- **Generation (LLM)**: Faithfulness, Relevance, Correctness
+- **Deterministic**: Hit@K, Mean Reciprocal Rank (MRR)
+- **Observability**: Tracks API Cost, Latency, and Inference Time per request
+
+*For more details, please see the [Full Documentation](docs/documentation.md).*
+
 ## Getting Started
 
 ### 1. Set Up Environment
