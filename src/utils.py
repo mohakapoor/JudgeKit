@@ -11,52 +11,35 @@ class EvalInput:
     ground_truth: str
 
 @dataclass
-class EvalOutput:
-    precision_score: float = None
-    precision_reasoning: str = None
-    recall_score: float = None
-    recall_reasoning: str = None
-    faithfulness_score: float = None
-    faithfulness_reasoning: str = None 
-    relevance_score: float = None
-    relevance_reasoning: str = None
-    cost: float = 0.0
-    latency: float = 0.0
-    inference_time: float = 0.0    
-
-
-@dataclass
-class RetrievalInput:
-    query: str
-    contexts: list[str]
-    ground_truth: str 
-
-@dataclass
-class RetrievalOutput:
+class RetrievalMetrics:
     precision_score: float
     precision_reasoning: str
     recall_score: float
     recall_reasoning: str
-    cost: float
-    latency: float
-    inference_time: float
+    cost: float = 0.0
+    latency: float = 0.0
+    inference_time: float = 0.0
 
 @dataclass
-class GenerationInput:
-    query: str 
-    contexts: list[str]
-    response: str 
-
-@dataclass
-class GenerationOutput:
+class GenerationMetrics:
     faithfulness_score: float
     faithfulness_reasoning: str 
     relevance_score: float
     relevance_reasoning: str
-    cost: float
-    latency: float
-    inference_time: float
+    cost: float = 0.0
+    latency: float = 0.0
+    inference_time: float = 0.0
 
+@dataclass
+class EvalOutput:
+    retrieval_metrics: RetrievalMetrics = None
+    generation_metrics: GenerationMetrics = None
+    total_cost: float = 0.0
+    total_latency: float = 0.0
+    total_inference_time = 0.0
+
+
+    
 
 def format_contexts(raw_contexts):
     formatted = []
