@@ -36,6 +36,27 @@ class GenerationOutput:
     inference_time: float
 
 
+def format_contexts(raw_contexts):
+    formatted = []
+    for c in raw_contexts:
+        if isinstance(c, dict) and "text" in c and "metadata" in c:
+            meta = c["metadata"]
+            
+            file_path = meta.get("path", meta.get("filename", "Unknown File"))
+            
+            # Strip out the knowledge_base/repos/ prefix so the Repo name is the root
+            if file_path.startswith("knowledge_base\\repos\\"):
+                file_path = file_path.replace("knowledge_base\\repos\\", "", 1)
+            elif file_path.startswith("knowledge_base/repos/"):
+                file_path = file_path.replace("knowledge_base/repos/", "", 1)
+                
+            start = meta.get("start_line", "?")
+            end = meta.get("end_line", "?")
+            formatted.append(f"File: {file_path} (Lines {start}-{end})\nCode:\n{c['text']}")
+        else:
+            formatted.append(str(c))
+    return formatted
+
 def batch_load_questions(PATH,count=5):
     with open(PATH,"r",encoding="utf-8") as f:
         data = json.load(f)
@@ -45,9 +66,9 @@ def batch_load_questions(PATH,count=5):
 
         for i in range(count):
             ques = data["question"][i]
-            contexts = data["contexts"][i]
+            contexts = format_contexts(data["contexts"][i])
             ground_truth = data["ground_truth"][i]
-            response = data["responses"][i][0]["text"]  
+            response = data["responses"][i]  
             retrieval_inputs.append(RetrievalInput(ques,contexts,ground_truth))
             generation_inputs.append(GenerationInput(ques,contexts,response))
 
@@ -59,9 +80,9 @@ def random_ques_loader():
         data = json.load(f)
         i = randint(0,51)
         ques = data["question"][i]
-        contexts = data["contexts"][i]
+        contexts = format_contexts(data["contexts"][i])
         ground_truth = data["ground_truth"][i]
-        response = data["responses"][i][0]["text"]  
+        response = data["responses"][i]  
         r = RetrievalInput(ques,contexts,ground_truth)
         g = GenerationInput(ques,contexts,response)
 
