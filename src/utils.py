@@ -28,6 +28,8 @@ class GenerationMetrics:
     faithfulness_reasoning: str = None
     relevance_score: float = None
     relevance_reasoning: str = None
+    correctness_score: float = None
+    correctness_reasoning: str = None
     cost: float = 0.0
     latency: float = 0.0
     inference_time: float = 0.0

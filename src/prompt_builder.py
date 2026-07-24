@@ -12,6 +12,7 @@ def build_generation_prompt(data:EvalInput) -> str:
     Query: {data.query}
     Context: {data.contexts}
     Response: {data.response}
+    Ground Truth: {data.ground_truth}
     """
     
 
