@@ -12,13 +12,14 @@ An **Orchestrator** coordinates these two agents sequentially and merges their o
 
 ## 3. Evaluation Metrics
 
-### 3.1 RAG Triad (LLM-Evaluated)
+### 3.1 LLM-Evaluated Metrics
 JudgeKit employs a strict ternary scoring rubric (0.0, 0.5, 1.0) to minimize LLM variance. Before scoring, the model is forced to output a "Chain of Thought" reasoning block to ensure logical consistency.
 
 * **Context Precision (Retrieval)**: Does the retrieved context contain the exact answer?
 * **Context Recall (Retrieval)**: Is the retrieved context relevant without unnecessary noise?
 * **Faithfulness (Generation)**: Is the generated answer fully supported by the retrieved contexts, or did the model hallucinate?
 * **Relevance (Generation)**: Does the generated answer actually address the user's initial query?
+* **Correctness (Generation)**: Does the generated response factually match the provided human-curated Ground Truth answer?
 
 ### 3.2 Deterministic Metrics
 JudgeKit mathematically calculates exact-match retrieval algorithms:
@@ -36,7 +37,7 @@ The unified input payload required by all evaluators.
     "File: geography.md (Lines 10-15)\nContext:\nParis is the capital of France."
   ],
   "response": "The capital is Paris.",
-  "ground_truth": "geography.md"
+  "ground_truth": "The capital of France is Paris, located in Europe."
 }
 ```
 
@@ -55,7 +56,14 @@ The final payload containing nested metrics.
     "latency": 0.5,
     "inference_time": 0.4
   },
-  "generation_metrics": { ... },
+  "generation_metrics": { 
+    "faithfulness_score": 1.0,
+    "relevance_score": 1.0,
+    "correctness_score": 1.0,
+    "cost": 0.0001,
+    "latency": 0.6,
+    "inference_time": 0.5
+  },
   "total_cost": 0.0002,
   "total_latency": 1.0,
   "total_inference_time": 0.8
