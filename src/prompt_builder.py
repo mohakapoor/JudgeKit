@@ -1,13 +1,13 @@
-from src.utils import RetrievalInput,GenerationInput
+from src.utils import EvalInput
 
-def build_retrieval_prompt(data:RetrievalInput) -> str:
+def build_retrieval_prompt(data:EvalInput) -> str:
     return f"""
     Query: {data.query}
     Context: {data.contexts}
     Ground Truth: {data.ground_truth}
     """
 
-def build_generation_prompt(data:GenerationInput) -> str:
+def build_generation_prompt(data:EvalInput) -> str:
     return f"""
     Query: {data.query}
     Context: {data.contexts}
