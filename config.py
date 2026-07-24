@@ -1,8 +1,8 @@
-MODEL_NAME = "llama-3.1-8b-instant"
+MODEL_NAME = "llama-3.3-70b-versatile"
 INPUT_COST = 0.05
 OUTPUT_COST = 0.08
 TEMPERATURE = 0.0
-PATH = "generated_responses.json"
+PATH = "test_responses.json"
 COUNT = 5
 OUTPUT_PATH = "evaluation_results.json"
 GENERATION_SYSTEM_PROMPT = """You are an expert Generation Evaluator for a RAG pipeline. 
