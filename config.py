@@ -1,6 +1,6 @@
 MODEL_NAME = "llama-3.3-70b-versatile"
-INPUT_COST = 0.05
-OUTPUT_COST = 0.08
+INPUT_COST = 0.59
+OUTPUT_COST = 0.79
 TEMPERATURE = 0.0
 PATH = "test_responses.json"
 COUNT = 5
