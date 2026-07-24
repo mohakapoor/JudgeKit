@@ -12,20 +12,22 @@ class EvalInput:
 
 @dataclass
 class RetrievalMetrics:
-    precision_score: float
-    precision_reasoning: str
-    recall_score: float
-    recall_reasoning: str
+    precision_score: float = None
+    precision_reasoning: str = None
+    recall_score: float = None
+    recall_reasoning: str = None
+    hit_at_k: float = None
+    mrr: float = None
     cost: float = 0.0
     latency: float = 0.0
     inference_time: float = 0.0
 
 @dataclass
 class GenerationMetrics:
-    faithfulness_score: float
-    faithfulness_reasoning: str 
-    relevance_score: float
-    relevance_reasoning: str
+    faithfulness_score: float = None
+    faithfulness_reasoning: str = None
+    relevance_score: float = None
+    relevance_reasoning: str = None
     cost: float = 0.0
     latency: float = 0.0
     inference_time: float = 0.0
