@@ -4,6 +4,28 @@ from config import INPUT_COST,OUTPUT_COST,PATH
 from random import randint
 
 @dataclass
+class EvalInput:
+    query:str
+    response: str
+    contexts: list[str]
+    ground_truth: str
+
+@dataclass
+class EvalOutput:
+    precision_score: float
+    precision_reasoning: str
+    recall_score: float
+    recall_reasoning: str
+    faithfulness_score: float
+    faithfulness_reasoning: str 
+    relevance_score: float
+    relevance_reasoning: str
+    cost: float
+    latency: float
+    inference_time: float    
+
+
+@dataclass
 class RetrievalInput:
     query: str
     contexts: list[str]
@@ -52,7 +74,7 @@ def format_contexts(raw_contexts):
                 
             start = meta.get("start_line", "?")
             end = meta.get("end_line", "?")
-            formatted.append(f"File: {file_path} (Lines {start}-{end})\nCode:\n{c['text']}")
+            formatted.append(f"File: {file_path} (Lines {start}-{end})\nContext:\n{c['text']}")
         else:
             formatted.append(str(c))
     return formatted
