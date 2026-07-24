@@ -36,10 +36,10 @@ class EvalOutput:
     generation_metrics: GenerationMetrics = None
     total_cost: float = 0.0
     total_latency: float = 0.0
-    total_inference_time = 0.0
+    total_inference_time: float = 0.0
 
 
-    
+
 
 def format_contexts(raw_contexts):
     formatted = []
