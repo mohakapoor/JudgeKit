@@ -12,17 +12,17 @@ class EvalInput:
 
 @dataclass
 class EvalOutput:
-    precision_score: float
-    precision_reasoning: str
-    recall_score: float
-    recall_reasoning: str
-    faithfulness_score: float
-    faithfulness_reasoning: str 
-    relevance_score: float
-    relevance_reasoning: str
-    cost: float
-    latency: float
-    inference_time: float    
+    precision_score: float = None
+    precision_reasoning: str = None
+    recall_score: float = None
+    recall_reasoning: str = None
+    faithfulness_score: float = None
+    faithfulness_reasoning: str = None 
+    relevance_score: float = None
+    relevance_reasoning: str = None
+    cost: float = 0.0
+    latency: float = 0.0
+    inference_time: float = 0.0    
 
 
 @dataclass
@@ -83,18 +83,16 @@ def batch_load_questions(PATH,count=5):
     with open(PATH,"r",encoding="utf-8") as f:
         data = json.load(f)
 
-        retrieval_inputs = []
-        generation_inputs = []
+        inputs = []
 
         for i in range(count):
             ques = data["question"][i]
             contexts = format_contexts(data["contexts"][i])
             ground_truth = data["ground_truth"][i]
             response = data["responses"][i]  
-            retrieval_inputs.append(RetrievalInput(ques,contexts,ground_truth))
-            generation_inputs.append(GenerationInput(ques,contexts,response))
+            inputs.append(EvalInput(ques,response,contexts,ground_truth))
 
-    return retrieval_inputs,generation_inputs
+    return inputs
 
 
 def random_ques_loader():
@@ -105,21 +103,16 @@ def random_ques_loader():
         contexts = format_contexts(data["contexts"][i])
         ground_truth = data["ground_truth"][i]
         response = data["responses"][i]  
-        r = RetrievalInput(ques,contexts,ground_truth)
-        g = GenerationInput(ques,contexts,response)
+        e = EvalInput(ques,response,contexts,ground_truth)
 
-    return r,g
+    return e
 
-def save_results(retrieval_results, generation_results, PATH):
+def save_results(eval_res, PATH):
     combined_data = []
     
-    for ret_res, gen_res in zip(retrieval_results, generation_results):
-        entry = {
-            "retrieval_evaluation": asdict(ret_res),
-            "generation_evaluation": asdict(gen_res)
-        }
-        
-        combined_data.append(entry)
+    for e in eval_res:
+        combined_data.append(asdict(e))
+
     with open(PATH, "w", encoding="utf-8") as f:
         json.dump(combined_data, f, indent=4)
 
