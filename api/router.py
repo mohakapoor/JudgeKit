@@ -38,7 +38,7 @@ async def status_check(request: Request):
         "version":request.app.version
     }
 
-@router.get("/input", tags=["Ingest"],dependencies=[Depends(verify_token)])
+@router.get("/get_input", tags=["Test"],dependencies=[Depends(verify_token)])
 async def get_inputs():
     return asdict(random_ques_loader())
     
