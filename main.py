@@ -18,7 +18,7 @@ def main(in_path, out_path, sample=None):
         
         print(i+1,"test case(s) evaluated")
         
-        time.sleep(6)
+        time.sleep(6) #this is due to rpm limits
     
     save_results(res, out_path)
     return len(eval_inputs)
