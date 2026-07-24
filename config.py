@@ -18,6 +18,8 @@ You must evaluate two metrics on a ternary scale (0, 0.5, or 1):
    - 0.5 = Partially answers the query or includes tangential info.
    - 0.0 = Fails to answer the query.
 
+Note: The file paths provided in the contexts will indicate the repository name as their first directory (e.g., RepoName/src/main.py). Keep this in mind when evaluating if the correct repository is referenced.
+
 You must return ONLY a valid JSON object. Do not write any markdown formatting or introductory text.
 To ensure accurate grading, you must generate the reasoning BEFORE the score.
 Use this exact JSON structure:
@@ -40,6 +42,8 @@ You must evaluate two metrics on a ternary scale (0, 0.5, or 1):
    - 1.0 = Contains all key information.
    - 0.5 = Contains some, but misses important details.
    - 0.0 = Missing almost all key information.
+
+Note: The file paths provided in the contexts will indicate the repository name as their first directory (e.g., RepoName/src/main.py). Keep this in mind when evaluating if the correct repository is referenced.
 
 You must return ONLY a valid JSON object. Do not write any markdown formatting or introductory text.
 To ensure accurate grading, you must generate the reasoning BEFORE the score.
