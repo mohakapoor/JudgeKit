@@ -1,21 +1,25 @@
 # JudgeKit
 
-JudgeKit is an LLM-as-a-Judge evaluation framework for scoring Retrieval-Augmented Generation (RAG) pipelines. 
+JudgeKit is a fast, lightweight LLM-as-a-Judge evaluation framework for scoring Retrieval-Augmented Generation (RAG) pipelines. Powered by Llama 3.3 70B via the Groq API, it evaluates vector retrieval accuracy and generated responses using both LLM reasoning and deterministic metrics.
 
-Using Llama 3 via the Groq API, JudgeKit implements a dual-agent architecture to evaluate the retrieval engine and the generation engine independently.
+## Getting Started
 
-## Features
-- **Dual-Agent Architecture**: Implements two evaluators (`eval_retrieval` and `eval_generation`).
-- **RAG Triad Metrics**: Evaluates Context Precision, Context Recall, Faithfulness, and Relevance.
-- **Ternary Scoring Rubric**: Utilizes a 0.0, 0.5, and 1.0 scoring system to minimize evaluation variance.
-- **Chain of Thought (CoT)**: Enforces reasoning generation prior to scoring.
-- **Structured JSON Output**: Guarantees parseable JSON output for all evaluations.
-- **Observability Metrics**: Calculates and logs API cost, end-to-end latency, and inference time per request.
-- **Rate Limiting**: Includes request throttling to comply with API limits.
+### 1. Set Up Environment
+Create a `.env` file in the root directory and add your API keys:
+```env
+API_TOKEN=your-secure-token-for-fastapi  #only needed if you want to use the API
+GROQ_API_KEY=your-groq-api-key
+```
 
-## Project Structure
-- `main.py`: The entry point that loads data, iterates through the evaluation dataset, and outputs results.
-- `config.py`: Contains system prompts, rubrics, and model configuration parameters.
-- `src/agent.py`: Handles API requests and JSON response parsing.
-- `src/prompt_builder.py`: Formats the evaluation context and query for the model.
-- `src/utils.py`: Provides data models, file I/O operations, and cost calculation logic.
+### 2. Run the CLI
+To batch evaluate a dataset of questions and contexts:
+```bash
+uv run python main.py --input test_responses.json --output test_results.json --sample 5
+```
+
+### 3. Run the API Backend
+To spin up the FastAPI server and expose the `/judge_all` endpoints for external integration:
+```bash
+uv run uvicorn api.main:app --reload
+```
+Once running, navigate to `http://127.0.0.1:8000/docs` (or your configured port) to test the secure endpoints.
