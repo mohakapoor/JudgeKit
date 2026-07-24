@@ -4,28 +4,26 @@ from dotenv import load_dotenv
 import json
 import time
 from config import RETRIEVAL_SYSTEM_PROMPT,GENERATION_SYSTEM_PROMPT
-from src.prompt_builder import build_generation_prompt,build_retrieval_prompt
 from config import TEMPERATURE,MODEL_NAME
-from src.utils import calculate_cost,RetrievalOutput,GenerationOutput
+from src.utils import calculate_cost,RetrievalMetrics,GenerationMetrics,EvalOutput
 
 load_dotenv()
 
 
-def eval_retrieval(retrieval_input):
+def eval_retrieval(usr_prompt_retrieval):
     
     groq_api_key = os.getenv("GROQ_API_KEY")
 
     client = Groq(
         api_key=groq_api_key
     )
-    usr_prompt = build_retrieval_prompt(retrieval_input)
     start = time.time()
     response = client.chat.completions.create(
         model=MODEL_NAME,
         temperature=TEMPERATURE,
         messages=[
             {"role": "system", "content": RETRIEVAL_SYSTEM_PROMPT},
-            {"role": "user", "content": usr_prompt}
+            {"role": "user", "content": usr_prompt_retrieval}
         ],
         response_format={"type":"json_object"}
     )
@@ -39,22 +37,21 @@ def eval_retrieval(retrieval_input):
     parsed_json["latency"] = end - start
     parsed_json["inference_time"] = response.usage.total_time
 
-    return RetrievalOutput(**parsed_json)
+    return RetrievalMetrics(**parsed_json)
 
-def eval_generation(generation_input):
+def eval_generation(usr_prompt_generation):
     groq_api_key = os.getenv("GROQ_API_KEY")
 
     client = Groq(
         api_key=groq_api_key
     )
-    usr_prompt = build_generation_prompt(generation_input)
     start = time.time()
     response = client.chat.completions.create(
         model=MODEL_NAME,
         temperature=TEMPERATURE,
         messages=[
             {"role": "system", "content": GENERATION_SYSTEM_PROMPT},
-            {"role": "user", "content": usr_prompt}
+            {"role": "user", "content": usr_prompt_generation}
         ],
         response_format={"type":"json_object"}
     )
@@ -68,4 +65,4 @@ def eval_generation(generation_input):
     parsed_json["latency"] = end-start
     parsed_json["inference_time"] = response.usage.total_time
 
-    return GenerationOutput(**parsed_json)
+    return GenerationMetrics(**parsed_json)
