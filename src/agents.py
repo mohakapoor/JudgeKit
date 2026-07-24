@@ -10,7 +10,7 @@ from src.utils import calculate_cost,RetrievalMetrics,GenerationMetrics,EvalOutp
 load_dotenv()
 
 
-def eval_retrieval(usr_prompt_retrieval):
+def retrieval_eval_agent(usr_prompt_retrieval):
     
     groq_api_key = os.getenv("GROQ_API_KEY")
 
@@ -39,7 +39,7 @@ def eval_retrieval(usr_prompt_retrieval):
 
     return RetrievalMetrics(**parsed_json)
 
-def eval_generation(usr_prompt_generation):
+def generation_eval_agent(usr_prompt_generation):
     groq_api_key = os.getenv("GROQ_API_KEY")
 
     client = Groq(
