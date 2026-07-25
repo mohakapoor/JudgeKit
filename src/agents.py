@@ -33,6 +33,12 @@ def retrieval_eval_agent(usr_prompt_retrieval):
     output_tokens = response.usage.completion_tokens
     cost = calculate_cost(input_tokens,output_tokens)
     parsed_json = json.loads(raw_text)
+    p_scores = [s for s in parsed_json.get("precision_score", []) if s is not None]
+    parsed_json["precision_score"] = sum(p_scores) / len(p_scores) if p_scores else 0.0
+
+    r_scores = [s for s in parsed_json.get("recall_score", []) if s is not None]
+    parsed_json["recall_score"] = sum(r_scores) / len(r_scores) if r_scores else 0.0
+
     parsed_json["cost"] = cost
     parsed_json["latency"] = end - start
     parsed_json["inference_time"] = response.usage.total_time
@@ -61,6 +67,14 @@ def generation_eval_agent(usr_prompt_generation):
     output_tokens = response.usage.completion_tokens
     cost = calculate_cost(input_tokens,output_tokens)
     parsed_json = json.loads(raw_text)
+    f_scores = [s for s in parsed_json.get("faithfulness_score", []) if s is not None]
+    parsed_json["faithfulness_score"] = sum(f_scores) / len(f_scores) if f_scores else 0.0
+
+    r_scores = [s for s in parsed_json.get("relevance_score", []) if s is not None]
+    parsed_json["relevance_score"] = sum(r_scores) / len(r_scores) if r_scores else 0.0
+
+    c_scores = [s for s in parsed_json.get("correctness_score", []) if s is not None]
+    parsed_json["correctness_score"] = sum(c_scores) / len(c_scores) if c_scores else 0.0
     parsed_json["cost"] = cost
     parsed_json["latency"] = end-start
     parsed_json["inference_time"] = response.usage.total_time
