@@ -2,6 +2,14 @@ from dataclasses import dataclass,asdict
 import json
 from config import INPUT_COST,OUTPUT_COST,PATH
 from random import randint
+from pathlib import Path
+
+def clean_path(p_str):
+    p = Path(p_str)
+    parts = p.parts
+    if len(parts) >= 2 and parts[0] == "knowledge_base" and parts[1] == "repos":
+        return Path(*parts[2:])
+    return p
 
 @dataclass
 class EvalInput:
@@ -9,13 +17,14 @@ class EvalInput:
     response: str
     contexts: list[str]
     ground_truth: str
+    relevant_files: list[str] = None
 
 @dataclass
 class RetrievalMetrics:
     precision_score: float = None
-    precision_reasoning: str = None
+    precision_reasoning: list[str] = None
     recall_score: float = None
-    recall_reasoning: str = None
+    recall_reasoning: list[str] = None
     hit_at_k: float = None
     mrr: float = None
     cost: float = 0.0
@@ -25,11 +34,11 @@ class RetrievalMetrics:
 @dataclass
 class GenerationMetrics:
     faithfulness_score: float = None
-    faithfulness_reasoning: str = None
+    faithfulness_reasoning: list[str] = None
     relevance_score: float = None
-    relevance_reasoning: str = None
+    relevance_reasoning: list[str] = None
     correctness_score: float = None
-    correctness_reasoning: str = None
+    correctness_reasoning: list[str] = None
     cost: float = 0.0
     latency: float = 0.0
     inference_time: float = 0.0
@@ -53,15 +62,12 @@ def format_contexts(raw_contexts):
             
             file_path = meta.get("path", meta.get("filename", "Unknown File"))
             
-            # Strip out the knowledge_base/repos/ prefix so the Repo name is the root
-            if file_path.startswith("knowledge_base\\repos\\"):
-                file_path = file_path.replace("knowledge_base\\repos\\", "", 1)
-            elif file_path.startswith("knowledge_base/repos/"):
-                file_path = file_path.replace("knowledge_base/repos/", "", 1)
+            # Use pathlib to cleanly extract the path relative to repos
+            clean_p = clean_path(file_path)
                 
             start = meta.get("start_line", "?")
             end = meta.get("end_line", "?")
-            formatted.append(f"File: {file_path} (Lines {start}-{end})\nContext:\n{c['text']}")
+            formatted.append(f"File: {str(clean_p)} (Lines {start}-{end})\nContext:\n{c['text']}")
         else:
             formatted.append(str(c))
     return formatted
@@ -78,8 +84,9 @@ def batch_load_questions(PATH, count=None):
             ques = data["question"][i]
             contexts = format_contexts(data["contexts"][i])
             ground_truth = data["ground_truth"][i]
-            response = data["responses"][i]  
-            inputs.append(EvalInput(ques,response,contexts,ground_truth))
+            response = data.get("answer", data.get("responses"))[i]  
+            relevant_files = data["relevant_files"][i] if "relevant_files" in data and len(data["relevant_files"]) > i else None
+            inputs.append(EvalInput(ques,response,contexts,ground_truth,relevant_files))
 
     return inputs
 
@@ -91,8 +98,9 @@ def random_ques_loader():
         ques = data["question"][i]
         contexts = format_contexts(data["contexts"][i])
         ground_truth = data["ground_truth"][i]
-        response = data["responses"][i]  
-        e = EvalInput(ques,response,contexts,ground_truth)
+        response = data.get("answer", data.get("responses"))[i]  
+        relevant_files = data["relevant_files"][i] if "relevant_files" in data and len(data["relevant_files"]) > i else None
+        e = EvalInput(ques,response,contexts,ground_truth,relevant_files)
 
     return e
 
