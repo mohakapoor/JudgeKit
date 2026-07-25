@@ -3,7 +3,7 @@ from api.router import router
 app = FastAPI(
     title="Judgekit API",
     description="LLM Judget Agent",
-    version="0.1.0",
+    version="2.0.0",
 )
 
 app.include_router(router)
