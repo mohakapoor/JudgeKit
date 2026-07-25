@@ -19,10 +19,10 @@ JudgeKit is a fast, lightweight, and rigorous **LLM-as-a-Judge** evaluation fram
 ## Getting Started
 
 ### 1. Set Up Environment
-Create a `.env` file in the root directory and add your API keys:
+Create a `.env` file in the root directory and add API keys:
 ```env
-API_TOKEN=your-secure-token-for-fastapi  #only needed if you want to use the API
-GROQ_API_KEY=your-groq-api-key
+API_TOKEN=secure-token  #only needed if using the API
+GROQ_API_KEY=groq-api-key
 ```
 
 ### 2. Run the CLI
@@ -36,4 +36,4 @@ To spin up the FastAPI server and expose the `/judge_all` endpoints for external
 ```bash
 uv run uvicorn api.main:app --reload
 ```
-Once running, navigate to `http://127.0.0.1:8000/docs` (or your configured port) to test the secure endpoints.
+Once running, navigate to `http://127.0.0.1:8000/docs` (or the configured port) to test the secure endpoints.
