@@ -3,24 +3,33 @@ from config import PATH
 import time
 import argparse
 import json
-from src.utils import batch_load_questions,save_results
+import os
+from src.utils import batch_load_questions, append_result_jsonl
 
 
 def main(in_path, out_path, sample=None):
     eval_inputs = batch_load_questions(in_path, sample)
-    res = []
     
+    start_idx = 0
+    if os.path.exists(out_path):
+        with open(out_path, "r", encoding="utf-8") as f:
+            start_idx = sum(1 for line in f if line.strip())
+        if start_idx > 0:
+            print(f"Resuming from test case {start_idx + 1}...")
+            
     print(f"Starting evaluation of {len(eval_inputs)} test cases...\n")
     
-    for i, input in enumerate(eval_inputs):
+    for i in range(start_idx, len(eval_inputs)):
+        input = eval_inputs[i]
         eval_out = orchestrator(input)
-        res.append(eval_out)
         
         print(i+1,"test case(s) evaluated")
         
-        time.sleep(6) #this is due to rpm limits
-    
-    save_results(res, out_path)
+        append_result_jsonl(eval_out, out_path)
+        
+        if i < len(eval_inputs) - 1:
+            time.sleep(5) #this is due to rpm limits
+            
     return len(eval_inputs)
 
 if __name__ == "__main__":
