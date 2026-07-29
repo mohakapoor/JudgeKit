@@ -5,7 +5,7 @@ import argparse
 import json
 import os
 from src.utils import batch_load_questions, append_result_jsonl
-from aggregate_results import aggregate_results
+from aggregated_results import aggregate_results
 
 
 def main(in_path, out_path, sample=None, start_idx=0):
@@ -39,12 +39,11 @@ def main(in_path, out_path, sample=None, start_idx=0):
     return len(eval_inputs)
 
 if __name__ == "__main__":
-    from dataclasses import asdict
     parser = argparse.ArgumentParser(description="JudgeKit CLI")
     parser.add_argument("--input", type=str, default=PATH)
     parser.add_argument("--output", type=str, required=True)
     parser.add_argument("--sample", type=int, default=None)
-    parser.add_argument("--idx", type=int, default=0, help="Starting index (0-based) to resume from.")
+    parser.add_argument("--idx", type=int, default=0) # Starting index (0-based)
     
     args = parser.parse_args()
     count = main(args.input, args.output, args.sample, args.idx)
