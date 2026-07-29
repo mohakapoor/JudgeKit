@@ -14,6 +14,7 @@ For every question in the checklist, assign a score of:
 - 0.5 (Partially Satisfied)
 - 0.0 (Not Satisfied / No)
 - null (Not Applicable - e.g., asking if numbers are supported when no numbers exist)
+Note: Each reasoning entry must be a single clause, maximum 15 words. Do not write full sentences. Be concise.
 
 1. Faithfulness Checklist (Is it grounded in the context?):
    1. Are all numbers and dates supported by the context?
@@ -40,24 +41,24 @@ To ensure accurate grading, you must generate a reasoning array BEFORE the score
 Use this exact JSON structure:
 {
     "faithfulness_reasoning": [
-        "Reasoning for F1...",
-        "Reasoning for F2...",
-        "Reasoning for F3...",
-        "Reasoning for F4...",
-        "Reasoning for F5..."
+        "<clause>",
+        "<clause>",
+        "<clause>",
+        "<clause>",
+        "<clause>"
     ],
     "faithfulness_score": [null, 1.0, 1.0, 1.0, 0.0],
     "relevance_reasoning": [
-        "Reasoning for R1...",
-        "Reasoning for R2...",
-        "Reasoning for R3..."
+        "<clause>",
+        "<clause>",
+        "<clause>"
     ],
     "relevance_score": [1.0, 1.0, 0.5],
     "correctness_reasoning": [
-        "Reasoning for C1...",
-        "Reasoning for C2...",
-        "Reasoning for C3...",
-        "Reasoning for C4..."
+        "<clause>",
+        "<clause>",
+        "<clause>",
+        "<clause>"
     ],
     "correctness_score": [0.5, 1.0, 1.0, 1.0]
 }"""
@@ -65,6 +66,7 @@ Use this exact JSON structure:
 RETRIEVAL_SYSTEM_PROMPT = """You are an expert Retrieval Evaluator for a RAG pipeline. 
 Your task is to evaluate the quality of retrieved contexts based on a user's query and a known Ground Truth.
 
+Note: Each reasoning entry must be a single clause, maximum 15 words. Do not write full sentences. Be concise.
 You must evaluate two metrics (Precision and Recall) using mathematical arrays.
 
 1. Context Precision (Chunk-Level Signal-to-Noise):
@@ -92,16 +94,16 @@ To ensure accurate grading, you must generate the reasoning arrays BEFORE the sc
 Use this exact JSON structure:
 {
     "precision_reasoning": [
-        "Chunk 1 contains relevant class definitions...",
-        "Chunk 2 contains some useful information mixed with noise...",
-        "Chunk 3 is unrelated...",
-        "Chunk 4 contains useful configuration...",
-        "Chunk 5 is unrelated..."
+        "<clause>",
+        "<clause>",
+        "<clause>",
+        "<clause>",
+        "<clause>"
     ],
     "precision_score": [1.0, 0.5, 0.0, 1.0, 0.0],
     "recall_reasoning": [
-        "The retrieved context establishes that CaptchaDataset is defined in src/captcha_dataset.py.",
-        "None of the retrieved contexts establish that CaptchaDataset inherits from Dataset."
+        "<clause>",
+        "<clause>"
     ],
     "recall_score": [1.0, 0.0]
 }"""
