@@ -19,6 +19,7 @@ def with_key_rotation(env_var_name):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
+            retries = 0
             while True:
                 # Force the environment variable to the current key
                 os.environ[env_var_name] = keys[state["idx"]]
@@ -38,6 +39,14 @@ def with_key_rotation(env_var_name):
                     else:
                         print("TPM/RPM limit hit, waiting 60 seconds before retrying...")
                         time.sleep(60)
+                except Exception as e:
+                    retries += 1
+                    if retries > 5:
+                        print(f"Max retries exceeded for unexpected error: {e}")
+                        raise e
+                    sleep_time = 2 ** retries  # Exponential backoff: 2s, 4s, 8s, 16s, 32s
+                    print(f"Unexpected error (network/json): {e}. Retrying in {sleep_time}s...")
+                    time.sleep(sleep_time)
         return wrapper
     return decorator
 
