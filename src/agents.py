@@ -46,7 +46,7 @@ def retrieval_eval_agent(usr_prompt_retrieval):
     return RetrievalMetrics(**parsed_json)
 
 def generation_eval_agent(usr_prompt_generation):
-    groq_api_key = os.getenv("GROQ_API_KEY")
+    groq_api_key = os.getenv("GROQ_API_KEY2")
 
     client = Groq(
         api_key=groq_api_key
