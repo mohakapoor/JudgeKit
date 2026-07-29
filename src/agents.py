@@ -89,7 +89,7 @@ def retrieval_eval_agent(usr_prompt_retrieval):
 
 @with_key_rotation("GROQ_API_KEY")
 def generation_eval_agent(usr_prompt_generation):
-    groq_api_key = os.getenv("GROQ_API_KEY2")
+    groq_api_key = os.getenv("GROQ_API_KEY")
 
     client = Groq(
         api_key=groq_api_key
