@@ -113,6 +113,10 @@ def save_results(eval_res, path):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(combined_data, f, indent=4)
 
+def append_result_jsonl(eval_res, path):
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(asdict(eval_res)) + "\n")
+
 
 def calculate_cost(input_tokens,output_tokens):
     return ((input_tokens * INPUT_COST) + (output_tokens * OUTPUT_COST))/1000000
