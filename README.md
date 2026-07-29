@@ -30,6 +30,10 @@ JudgeKit is an **LLM-as-a-Judge** evaluation framework for scoring Retrieval-Aug
 
 *For more details, please see the [Full Documentation](docs/documentation.md).*
 
+## Cost Comparison
+
+Judge_Kit is a simpler alternative to frameworks like RAGAS and uses a lighter model configuration. On a test set of 52 cases (evaluating questions, contexts, responses, and ground truth), a standard RAGAS evaluation using GPT-4o costs approximately **$2.08**. By comparison, running the exact same 52 test cases through Judge_Kit using `llama-3.3-70b-versatile` on Groq cost **$0.1350**.
+
 ## Getting Started
 
 ### 1. Set Up Environment
@@ -51,7 +55,3 @@ To spin up the FastAPI server and expose the `/judge_all` endpoints for external
 uv run uvicorn api.main:app --reload
 ```
 Once running, navigate to `http://127.0.0.1:8000/docs` (or the configured port) to test the secure endpoints.
-
-## Cost Comparison
-
-Judge_Kit is a simpler alternative to frameworks like RAGAS and uses a lighter model configuration. On a test set of 52 cases (evaluating questions, contexts, responses, and ground truth), a standard RAGAS evaluation using GPT-4o costs approximately **$2.08**. By comparison, running the exact same 52 test cases through Judge_Kit using `llama-3.3-70b-versatile` on Groq cost **$0.1350**.
