@@ -162,3 +162,28 @@ These are the current limitations discovered in the system that I plan to fix in
 ### 6.7 Input/Output Guardrails (Toxicity & PII)
 * **Vulnerability**: The API blindly accepts and evaluates any payload it receives. A malicious actor could use the API to evaluate toxic material, prompt injections, or leak Personally Identifiable Information (PII) into the LLM provider's servers.
 * **Improvement**: Integrate a classification model (like LlamaGuard 8B or NeMo Guardrails) at the API entry point to intercept and reject unsafe queries before they reach the evaluation agents.
+
+
+### Aggregated Results on my Test case (52 test cases)
+
+After running `main.py`, Judge_Kit automatically runs `aggregated_results.py` to give you a breakdown like this:
+
+```text
+--- Aggregated Results (52 test cases) ---
+
+Retrieval Metrics:
+  Average precision_score: 0.4596
+  Average recall_score: 0.4835
+  Average hit_at_k: 0.7447
+  Average mrr: 0.4691
+
+Generation Metrics:
+  Average faithfulness_score: 0.8942
+  Average relevance_score: 0.8686
+  Average correctness_score: 0.8077
+
+System Performance:
+  Average total_cost: 0.0026 (Total Sum: 0.1350)
+  Average total_latency: 4.3361 (Total Sum: 225.4774)
+  Average total_inference_time: 2.3116 (Total Sum: 120.2013)
+```
