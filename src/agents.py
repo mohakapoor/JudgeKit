@@ -1,8 +1,9 @@
 import os
-from groq import Groq
+from groq import Groq, RateLimitError
 from dotenv import load_dotenv
 import json
 import time
+from functools import wraps
 from config import RETRIEVAL_SYSTEM_PROMPT,GENERATION_SYSTEM_PROMPT
 from config import TEMPERATURE,MODEL_NAME
 from src.utils import calculate_cost,RetrievalMetrics,GenerationMetrics,EvalOutput
@@ -10,6 +11,38 @@ from src.utils import calculate_cost,RetrievalMetrics,GenerationMetrics,EvalOutp
 load_dotenv()
 
 
+def with_key_rotation(env_var_name):
+    api_keys_str = os.getenv(env_var_name, "")
+    keys = [k for k in api_keys_str.split(",") if k]
+    state = {"idx": 0}
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            while True:
+                # Force the environment variable to the current key
+                os.environ[env_var_name] = keys[state["idx"]]
+                
+                try:
+                    return func(*args, **kwargs)
+                except RateLimitError as e:
+                    error_msg = str(e).lower()
+                    if "tokens per day" in error_msg or "tpd" in error_msg:
+                        state["idx"] += 1
+                        if state["idx"] >= len(keys):
+                            print(f"All {len(keys)} keys exhausted")
+                            raise e
+                            
+                        print("TPD limit hit retrying...")
+                        time.sleep(1)
+                    else:
+                        print("TPM/RPM limit hit, waiting 60 seconds before retrying...")
+                        time.sleep(60)
+        return wrapper
+    return decorator
+
+
+@with_key_rotation("GROQ_API_KEY")
 def retrieval_eval_agent(usr_prompt_retrieval):
     
     groq_api_key = os.getenv("GROQ_API_KEY")
@@ -45,6 +78,7 @@ def retrieval_eval_agent(usr_prompt_retrieval):
 
     return RetrievalMetrics(**parsed_json)
 
+@with_key_rotation("GROQ_API_KEY")
 def generation_eval_agent(usr_prompt_generation):
     groq_api_key = os.getenv("GROQ_API_KEY2")
 
