@@ -3,11 +3,7 @@
 # JudgeKit
 ### LLM-as-a-Judge Evaluation Framework for RAG Pipelines
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-05998b.svg)](https://fastapi.tiangolo.com/)
-[![Pipeline: RAG](https://img.shields.io/badge/Pipeline-RAG-32a852.svg)](#)
-[![LLM: Llama 3.3 70B](https://img.shields.io/badge/LLM-Llama_3.3_70B-orange.svg)](#)
-[![Provider: Groq](https://img.shields.io/badge/Provider-Groq-black.svg)](#)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/) [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-05998b.svg)](https://fastapi.tiangolo.com/) [![Pipeline: RAG](https://img.shields.io/badge/Pipeline-RAG-32a852.svg)](#) [![LLM: Llama 3.3 70B](https://img.shields.io/badge/LLM-Llama_3.3_70B-orange.svg)](#) [![Provider: Groq](https://img.shields.io/badge/Provider-Groq-black.svg)](#)
 
 [**Full Documentation**](docs/documentation.md)
 
@@ -32,7 +28,7 @@ JudgeKit is an **LLM-as-a-Judge** evaluation framework for scoring Retrieval-Aug
 
 ## Cost Comparison
 
-Judge_Kit is a simpler alternative to frameworks like RAGAS and uses a lighter model configuration. On a test set of 52 cases (evaluating questions, contexts, responses, and ground truth), a standard RAGAS evaluation using GPT-4o costs approximately **$2.08**. By comparison, running the exact same 52 test cases through Judge_Kit using `llama-3.3-70b-versatile` on Groq cost **$0.1350**.
+Judge_Kit is a simpler alternative to frameworks like RAGAS and uses a lighter model configuration. On a test set of 52 cases (evaluating questions, contexts, responses, and ground truth), a standard RAGAS evaluation using GPT-4o costs approximately **$2.08**. By comparison, running the exact same 52 test cases through Judge_Kit using `llama-3.3-70b-versatile` on Groq cost **$0.1350**. That's **~15.4x cheaper**.
 
 ## Getting Started
 
