@@ -72,13 +72,12 @@ def format_contexts(raw_contexts):
             formatted.append(str(c))
     return formatted
 
-def batch_load_questions(PATH, count=None):
+def batch_load_questions(PATH):
     with open(PATH,"r",encoding="utf-8") as f:
         data = json.load(f)
 
         inputs = []
-        if count is None:
-            count = len(data["question"])
+        count = len(data["question"])
 
         for i in range(count):
             ques = data["question"][i]
